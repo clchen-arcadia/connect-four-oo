@@ -1,5 +1,11 @@
 "use strict";
 
+document.querySelector('#start-button').addEventListener('click', startGame);
+
+function startGame(){
+  new Game(6, 7);
+}
+
 class Game {
   constructor(height = 6, width = 7, p1Color = 'red', p2Color = 'blue'){
     this.height = height;
@@ -10,6 +16,8 @@ class Game {
     this.board = [];
     this.currPlayer = 1;
     this.handleClick = this.handleClick.bind(this);
+
+    this.isGameOver = false;
 
     this.makeBoard();
     this.makeHtmlBoard();
@@ -86,6 +94,10 @@ class Game {
       // get x from ID of clicked cell
       const x = +evt.target.id;
 
+      if(this.isGameOver){
+        return;
+      }
+
       // get next spot in column (if none, ignore click)
       const y = this.findSpotForCol(x);
       if (y === null) {
@@ -98,6 +110,7 @@ class Game {
 
       // check for win
       if (this.checkForWin()) {
+        this.isGameOver = true;
         return this.endGame(`Player ${this.currPlayer} won!`);
       }
 
@@ -110,6 +123,8 @@ class Game {
       this.currPlayer = this.currPlayer === 1 ? 2 : 1;
     }
 
+    //NOTE: this is old code for using _win as a helper method rather
+    // than use arrow notation
     /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
     // _win(cells) {
@@ -160,4 +175,3 @@ class Game {
       }
     }
 }
-new Game(6, 7);
