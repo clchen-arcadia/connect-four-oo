@@ -1,4 +1,4 @@
-# Loan Calculator
+# Connect Four
 
 Simple web app for playing connect four.
 
